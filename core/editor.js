@@ -18,8 +18,6 @@ class Editor {
   }
 
   applyDelta(delta) {
-    console.log('applyDelta');
-    console.log(delta);
     let consumeNextNewline = false;
     this.scroll.update();
     let scrollLength = this.scroll.length();
@@ -27,6 +25,7 @@ class Editor {
     const normalizedDelta = normalizeDelta(delta);
     console.log('normalizedDelta');
     console.log(delta);
+    console.log(normalizedDelta);
     normalizedDelta.reduce((index, op) => {
       const length = op.retain || op.delete || op.insert.length || 1;
       let attributes = op.attributes || {};
