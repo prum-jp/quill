@@ -425,6 +425,7 @@ class Quill {
     return modify.call(
       this,
       () => {
+        console.log(delta);
         delta = new Delta(delta);
         console.log(delta);
         return this.editor.applyDelta(delta, source);
