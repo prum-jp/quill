@@ -420,10 +420,12 @@ class Quill {
   }
 
   updateContents(delta, source = Emitter.sources.API) {
+    console.log('updateContents');
     return modify.call(
       this,
       () => {
         delta = new Delta(delta);
+        console.log(delta);
         return this.editor.applyDelta(delta, source);
       },
       source,
