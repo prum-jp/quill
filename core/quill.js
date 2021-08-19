@@ -421,6 +421,7 @@ class Quill {
 
   updateContents(delta, source = Emitter.sources.API) {
     console.log('updateContents');
+    console.log(delta);
     return modify.call(
       this,
       () => {
