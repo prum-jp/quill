@@ -48,6 +48,14 @@ class History extends Module {
   change(source, dest) {
     if (this.stack[source].length === 0) return;
     const delta = this.stack[source].pop();
+
+    // file or appBookmarkの時、return
+    if (delta.ops && delta.ops.length) {
+      delta.ops = delta.ops.filter(
+        o => !o.insert || (!o.insert.file && !o.insert.appBookmark),
+      );
+    }
+
     const base = this.quill.getContents();
     const inverseDelta = delta.invert(base);
     this.stack[dest].push(inverseDelta);
