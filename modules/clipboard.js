@@ -148,6 +148,10 @@ class Clipboard extends Module {
     const html = e.clipboardData.getData('text/html');
     const text = e.clipboardData.getData('text/plain');
     const files = Array.from(e.clipboardData.files || []);
+
+    // true のみのbuttonを回避
+    if (html && html.indexOf('button class="ql-attach-btn"') > 0) return;
+    if (html && html.indexOf('button class="ql-bookmark-btn"') > 0) return;
     if (!html && files.length > 0) {
       this.quill.uploader.upload(range, files);
     } else {
