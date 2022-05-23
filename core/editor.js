@@ -23,6 +23,8 @@ class Editor {
     let scrollLength = this.scroll.length();
     this.scroll.batchStart();
     const normalizedDelta = normalizeDelta(delta);
+    console.log('normalizedDelta');
+    console.log(normalizedDelta);
     normalizedDelta.reduce((index, op) => {
       const length = op.retain || op.delete || op.insert.length || 1;
       let attributes = op.attributes || {};
@@ -49,6 +51,8 @@ class Editor {
           }
           attributes = AttributeMap.diff(formats, attributes) || {};
         } else if (typeof op.insert === 'object') {
+          console.log('op');
+          console.log(op);
           const key = Object.keys(op.insert)[0]; // There should only be one key
           if (key == null) return index;
           if (
