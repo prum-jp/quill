@@ -88,20 +88,7 @@ class Clipboard extends Module {
     if (!html) {
       return new Delta().insert(text || '');
     }
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const container = doc.body;
-    const nodeMatches = new WeakMap();
-    const [elementMatchers, textMatchers] = this.prepareMatching(
-      container,
-      nodeMatches,
-    );
-    const delta = traverse(
-      this.quill.scroll,
-      container,
-      elementMatchers,
-      textMatchers,
-      nodeMatches,
-    );
+    const delta = this.convertHTML(html);
     // Remove trailing newline
     if (
       deltaEndsWith(delta, '\n') &&
@@ -110,6 +97,23 @@ class Clipboard extends Module {
       return delta.compose(new Delta().retain(delta.length() - 1).delete(1));
     }
     return delta;
+  }
+
+  convertHTML(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const container = doc.body;
+    const nodeMatches = new WeakMap();
+    const [elementMatchers, textMatchers] = this.prepareMatching(
+      container,
+      nodeMatches,
+    );
+    return traverse(
+      this.quill.scroll,
+      container,
+      elementMatchers,
+      textMatchers,
+      nodeMatches,
+    );
   }
 
   dangerouslyPasteHTML(index, html, source = Quill.sources.API) {
@@ -154,9 +158,19 @@ class Clipboard extends Module {
     if (html && html.indexOf('button class="ql-bookmark-btn"') > 0) return;
     if (!html && files.length > 0) {
       this.quill.uploader.upload(range, files);
-    } else {
-      this.onPaste(range, { html, text });
+      return;
     }
+    if (html && files.length > 0) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      if (
+        doc.body.childElementCount === 1 &&
+        doc.body.firstElementChild.tagName === 'IMG'
+      ) {
+        this.quill.uploader.upload(range, files);
+        return;
+      }
+    }
+    this.onPaste(range, { html, text });
   }
 
   onCopy(range) {
