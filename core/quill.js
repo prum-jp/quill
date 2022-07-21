@@ -312,6 +312,7 @@ class Quill {
   }
 
   getText(index = 0, length = this.getLength() - index) {
+    console.log('Quill:getText!!!!!!!!')
     [index, length] = overload(index, length);
     return this.editor.getText(index, length);
   }
