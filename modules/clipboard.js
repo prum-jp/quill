@@ -80,7 +80,6 @@ class Clipboard extends Module {
   }
 
   convert({ html, text }, formats = {}) {
-    console.log('html:',html)
     if (formats[CodeBlock.blotName]) {
       return new Delta().insert(text, {
         [CodeBlock.blotName]: formats[CodeBlock.blotName],

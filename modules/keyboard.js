@@ -249,7 +249,6 @@ class Keyboard extends Module {
   }
 
   handleEnter(range, context) {
-    console.log('handleEnter!!!!!!')
     const lineFormats = Object.keys(context.format).reduce(
       (formats, format) => {
         if (

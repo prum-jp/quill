@@ -72,7 +72,6 @@ class Quill {
       Quill.debug(this.options.debug);
     }
     const html = this.container.innerHTML.trim();
-    console.log(html)
     this.container.classList.add('ql-container');
     this.container.innerHTML = '';
     instances.set(this.container, this);
