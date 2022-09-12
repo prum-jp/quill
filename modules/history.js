@@ -27,6 +27,16 @@ class History extends Module {
   change(source, dest) {
     if (this.stack[source].length === 0) return;
     let delta = this.stack[source].pop();
+
+    // file or appBookmarkの時、return
+    for (const item in delta) {
+      if (delta[item].ops && delta[item].ops.length) {
+        delta[item].ops = delta[item].ops.filter(
+          o => !o.insert || (!o.insert.file && !o.insert.appBookmark),
+        );
+      }
+    }
+
     this.stack[dest].push(delta);
     this.lastRecorded = 0;
     this.ignoreChange = true;
